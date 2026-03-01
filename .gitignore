@@ -2,3 +2,5 @@
 /.bundle/
 
 .env
+
+/db/db.json
