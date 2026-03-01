@@ -2,28 +2,47 @@ require 'dotenv/load'
 require 'discordrb'
 
 require './commands/campaigns'
+require './commands/characters'
 
 token = ENV['DISCORD_TOKEN']
 server_id = ENV['SERVER_ID']
 
 bot = Discordrb::Bot.new(
   token: token,
-  intents: [:direct_messages]
+  intents: [:direct_messages],
+  log_mode: :error
 )
 
+bot.debug = false
+
 bot.include! Campaigns
+bot.include! Characters
 
 bot.ready do
+  # notation for myself to keep track of
+  # /command_name <required command> </optional command/> ... <...>
+
   # /ping
   bot.register_application_command(:ping, 'Check if the bot is alive', server_id: server_id)
 
-  # /create_campaign <campaign name>
+  # CAMPAIGNS
+  # /create_campaign </campaign name/>
   bot.register_application_command(:create_campaign, 'Create a new DnD campaign to store characters in', server_id: server_id) do |conf|
-    conf.string('name', 'The name of the campaign', required: false)
+    conf.string('name', 'The name of the campaign', required: true)
+  end
+  # /remove_campaign <campaign name>
+  bot.register_application_command(:remove_campaign, 'Remove the campaign assigned to this channel and all the associated characters', server_id: server_id) do |conf|
+    conf.string('name', 'The name of the campaign', required: true)
   end
 
-  # /remove_campaign
-  bot.register_application_command(:remove_campaign, 'Remove the campaign assigned to this channel and all the associated characters', server_id: server_id)
+  # CHARACTERS
+  # /create_character <character name> <campaign>
+  bot.register_application_command(:create_character, 'Create a character', server_id: server_id) do |conf|
+    conf.string('name', 'The name of the character', required: true)
+    conf.string('campaign', 'The name of the campaign that the character is a part of', required: true)
+  end
+
+  # /
 end
 
 bot.application_command(:ping) do |event|
