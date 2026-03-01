@@ -17,7 +17,7 @@ module DB
 
     # get json from db.json and return as hash
     file_data = File.read(PATH)
-    stats = JSON.parse(file_data, symbolize_names: true)
+    stats = JSON.parse(file_data)
     return stats
   end
 
