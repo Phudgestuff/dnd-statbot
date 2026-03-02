@@ -41,4 +41,8 @@ module Campaigns
 
     event.respond content: "Deleted campaign `#{name}`"
   end
+
+  application_command(:list_campaigns) do |event|
+    event.respond content: "List of all campaigns:\n```\n#{DB.get_data.keys.join("\n")}```"
+  end
 end

@@ -34,6 +34,8 @@ bot.ready do
   bot.register_application_command(:remove_campaign, 'Remove the campaign assigned to this channel and all the associated characters', server_id: server_id) do |conf|
     conf.string('name', 'The name of the campaign', required: true)
   end
+  # /list_campaigns
+  bot.register_application_command(:list_campaigns, 'List all campaigns', server_id: server_id)
 
   # CHARACTERS
   # /create_character <character name> <campaign>
