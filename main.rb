@@ -44,7 +44,11 @@ bot.ready do
     conf.string('campaign', 'The name of the campaign that the character is a part of', required: true)
   end
 
-  # /
+  # /remove_character <campaign> <character name>
+  bot.register_application_command(:remove_character, 'Remove a character', server_id: server_id) do |conf|
+    conf.string('campaign', 'The name of the campaign that the character is a part of', required: true)
+    conf.string('name', 'The name of the character', required: true)
+  end
 end
 
 bot.application_command(:ping) do |event|

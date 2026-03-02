@@ -28,4 +28,30 @@ module Characters
 
     event.respond content: "New character created called `#{name}`"
   end
+
+  application_command :remove_character do |event|
+    name = event.options['name']
+    campaign = event.options['name']
+
+    data = DB.get_data
+
+    # check if campaign exists
+    unless data.has_key? campaign
+      event.respond content: "There is no campaign with this name", ephemeral: true
+      return
+    end
+
+    # check if there is a character with this name
+    unless data[campaign].has_key? name
+      event.respond content: "There is no character with this name", ephemeral: true
+      return
+    end
+
+    # remove character from campaign
+    data[campaign].delete(name)
+    
+    DB.update data
+
+    event.respond content: "Deleted character called `#{name}`"
+  end
 end
