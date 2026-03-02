@@ -31,7 +31,7 @@ module Characters
 
   application_command :remove_character do |event|
     name = event.options['name']
-    campaign = event.options['name']
+    campaign = event.options['campaign']
 
     data = DB.get_data
 
@@ -53,5 +53,18 @@ module Characters
     DB.update data
 
     event.respond content: "Deleted character called `#{name}`"
+  end
+
+  application_command :list_characters do |event|
+    campaign = event.options['campaign']
+
+    data = DB.get_data
+
+    # check if campaign exists
+    unless data.has_key? campaign
+      event.respond content: "There is no campaign with this name", ephemeral: true
+    end
+
+    event.respond content: "List of all characters: \n```\n#{data[campaign].keys.join('\n')}```"
   end
 end
